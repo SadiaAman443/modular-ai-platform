@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-core"
+version = "0.1.0"
+description = "Provider-independent, domain-agnostic AI Core foundation for enterprise AI applications."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Senior Python Software Architect"}
+]
+dependencies = [
+    "google-generativeai>=0.8.0",
+    "pyyaml>=6.0.1"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ai_core*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
