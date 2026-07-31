@@ -46,8 +46,19 @@ from ai_core.prompts import (
     PromptVariable,
     RenderedPrompt,
 )
+from ai_core.runtime import (
+    ConversationRuntime,
+    Event,
+    EventCallback,
+    EventDispatcher,
+    EventType,
+    RuntimeContext,
+    RuntimeException,
+    RuntimeState,
+    RuntimeStateError,
+)
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "BaseLLM",
@@ -56,9 +67,14 @@ __all__ = [
     "ConversationEngine",
     "ConversationException",
     "ConversationLifecycleError",
+    "ConversationRuntime",
     "ConversationState",
     "ConversationStateError",
     "ConversationStateManager",
+    "Event",
+    "EventCallback",
+    "EventDispatcher",
+    "EventType",
     "GeminiAdapter",
     "GenerationConfig",
     "LLMAuthenticationError",
@@ -83,6 +99,10 @@ __all__ = [
     "PromptTemplateError",
     "PromptVariable",
     "RenderedPrompt",
+    "RuntimeContext",
+    "RuntimeException",
+    "RuntimeState",
+    "RuntimeStateError",
     "UsageMetadata",
     "__version__",
 ]

@@ -9,7 +9,8 @@ A domain-agnostic, provider-independent Python foundation designed to power ente
 3. **Strict Layer Separation**:
    - `prompts/`: Manages system prompts, templates, rendering, and loading. Never invokes LLM providers directly.
    - `conversation/`: Manages conversation lifecycle, state, history, and message flow. Never builds prompts and communicates exclusively with `BaseLLM`.
-4. **Dependency Injection**: Engines, adapters, and factories accept injected clients and configurations, making unit testing and mocking trivial.
+   - `runtime/`: Bridges external conversation transports (voice/chat providers) and the AI Core foundations via an event-driven pub-sub architecture.
+4. **Dependency Injection**: Engines, runtimes, adapters, and factories accept injected clients and configurations, making unit testing and mocking trivial.
 
 ---
 
@@ -31,11 +32,17 @@ ai-core/
 │   │   ├── loader.py          # PromptLoader (text, JSON, YAML, directory loading)
 │   │   ├── engine.py          # PromptEngine template registry & renderer
 │   │   └── exceptions.py      # Structured prompt exception hierarchy
-│   └── conversation/
-│       ├── models.py          # ConversationContext, Message, MessageRole, ConversationState
-│       ├── state.py           # ConversationStateManager lifecycle & history controller
-│       ├── engine.py          # ConversationEngine orchestrator (communicates only with BaseLLM)
-│       └── exceptions.py      # Structured conversation exception hierarchy
+│   ├── conversation/
+│   │   ├── models.py          # ConversationContext, Message, MessageRole, ConversationState
+│   │   ├── state.py           # ConversationStateManager lifecycle & history controller
+│   │   ├── engine.py          # ConversationEngine orchestrator (communicates only with BaseLLM)
+│   │   └── exceptions.py      # Structured conversation exception hierarchy
+│   └── runtime/
+│       ├── events.py          # Event, EventType (SESSION_STARTED, USER_MESSAGE, ASSISTANT_RESPONSE, etc.)
+│       ├── models.py          # RuntimeContext, RuntimeState
+│       ├── dispatcher.py      # EventDispatcher pub-sub service
+│       ├── engine.py          # ConversationRuntime provider-agnostic execution engine
+│       └── exceptions.py      # Structured runtime exception hierarchy
 ```
 
 ---
@@ -83,4 +90,18 @@ assistant_msg = convo_engine.process_message(
 
 print(f"[{assistant_msg.role.value}] {assistant_msg.content}")
 print(convo_engine.get_history())
+```
+
+### 4. Conversation Runtime
+```python
+from ai_core.runtime import ConversationRuntime, Event, EventType
+
+runtime = ConversationRuntime(llm=llm)
+
+# Subscribe transport adapters or loggers to outgoing events
+runtime.subscribe(EventType.ASSISTANT_RESPONSE, lambda evt: print("Outgoing:", evt.payload["content"]))
+
+# Start session and send events
+runtime.start_session(system_prompt=rendered_system.text)
+events = runtime.send_user_message("Hello from an external transport!")
 ```
