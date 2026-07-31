@@ -10,6 +10,17 @@ from ai_core.config import (
     LLMConfig,
     LLMProviderConfig,
 )
+from ai_core.conversation import (
+    ConversationContext,
+    ConversationEngine,
+    ConversationException,
+    ConversationLifecycleError,
+    ConversationState,
+    ConversationStateError,
+    ConversationStateManager,
+    Message,
+    MessageRole,
+)
 from ai_core.llm import (
     BaseLLM,
     GeminiAdapter,
@@ -24,12 +35,30 @@ from ai_core.llm import (
     LLMUnsupportedProviderError,
     UsageMetadata,
 )
+from ai_core.prompts import (
+    PromptEngine,
+    PromptException,
+    PromptLoadError,
+    PromptLoader,
+    PromptRenderError,
+    PromptTemplate,
+    PromptTemplateError,
+    PromptVariable,
+    RenderedPrompt,
+)
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "BaseLLM",
     "ConfigLoader",
+    "ConversationContext",
+    "ConversationEngine",
+    "ConversationException",
+    "ConversationLifecycleError",
+    "ConversationState",
+    "ConversationStateError",
+    "ConversationStateManager",
     "GeminiAdapter",
     "GenerationConfig",
     "LLMAuthenticationError",
@@ -43,6 +72,17 @@ __all__ = [
     "LLMResponse",
     "LLMTimeoutError",
     "LLMUnsupportedProviderError",
+    "Message",
+    "MessageRole",
+    "PromptEngine",
+    "PromptException",
+    "PromptLoadError",
+    "PromptLoader",
+    "PromptRenderError",
+    "PromptTemplate",
+    "PromptTemplateError",
+    "PromptVariable",
+    "RenderedPrompt",
     "UsageMetadata",
     "__version__",
 ]
